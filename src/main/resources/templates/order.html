@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chọn sản phẩm</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <h2>Thêm sản phẩm vào đơn hàng</h2>
+    
+    <form action="/addOrderItem" method="post">
+        <label for="product">Chọn sản phẩm:</label>
+        <input list="productList" name="productName" id="product" placeholder="Chọn sản phẩm" required>
+        <datalist id="productList">
+            <option th:each="product : ${newInventory}" th:value="${product.name}" th:data-id="${product.id}"></option>
+        </datalist>
+
+        <input type="number" name="quantity" min="1" placeholder="Số lượng" required />
+        <input type="hidden" id="productId" name="productId" />
+        <button type="submit">Thêm vào đơn hàng</button>
+    </form>
+
+    <h2>Danh sách sản phẩm đã thêm vào đơn hàng</h2>
+    <ul>
+        <li th:each="orderItem : ${newOrderItems}">
+            <p>Tên sản phẩm: <span th:text="${orderItem.product.name}"></span>,
+               Số lượng: <span th:text="${orderItem.quantity}"></span>,
+               Giá: <span th:text="${orderItem.price}"></span>
+            </p>
+        </li>
+    </ul>
+
+    <form action="/printOrder" method="get">
+        <button type="submit">In hóa đơn</button>
+    </form>
+
+    <script>
+        document.getElementById('product').addEventListener('change', function() {
+            var selectedProduct = this.value;
+            var options = document.querySelectorAll('#productList option');
+            options.forEach(function(option) {
+                if(option.value === selectedProduct) {
+                    document.getElementById('productId').value = option.getAttribute('data-id');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
