@@ -1,5 +1,6 @@
 package com.example.student_demo.controller;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -14,13 +15,24 @@ import com.example.student_demo.model.order.Order;
 import com.example.student_demo.model.order.OrderItem;
 import com.example.student_demo.model.product.Inventory;
 import com.example.student_demo.model.product.Product;
+import com.example.student_demo.model.user.Manager;
+import com.example.student_demo.model.user.Staff;
 import com.example.student_demo.model.user.User;
+import com.example.student_demo.model.user.UserList;
+
+import jakarta.annotation.PostConstruct;
 
 @Controller
 public class ProjectController {
 
     private Order newOrder = new Order();
     private Inventory newInventory = new Inventory();
+    private UserList newUserList = new UserList();
+
+    @PostConstruct
+    public void init() {
+        setUserInit();
+    }
 
     // Khởi tạo danh sách sản phẩm
     public void setInitialValue() {
@@ -34,6 +46,37 @@ public class ProjectController {
         newInventory.getProducts().add(product4);
     }
 
+    public void setUserInit() {
+        setInitialValue();
+        Manager newUser = new Manager();
+        newUser.setShopName("mocvien@coffee");
+        newUser.setUsername("username");
+        newUser.setPassword("password");
+        newUser.setInventoryManager(newInventory);
+        newUserList.getUserList().add(newUser);
+
+    }
+
+    @GetMapping("/")
+    public String getLoginPage() {
+        return "login"; // Points to login.html
+    }
+    
+    
+
+    @PostMapping("/login")
+    public String inputInformation(@RequestParam String shopName, @RequestParam String username, @RequestParam String password, Model model) {
+        for (User user : newUserList.getUserList()) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getShopName().equals(shopName)) {
+                return "redirect:/order";
+
+            }
+        }
+        model.addAttribute("loginError", true); // Set error message in case of failure
+        return "login"; // Redirect back to login page (index.html) with error
+
+    }
+
     // Hiển thị sản phẩm
     @GetMapping("/order")// annotation "/order" 
     public String getOrder(Model model) {
@@ -42,7 +85,7 @@ public class ProjectController {
         model.addAttribute("newOrderItems", newOrder.getOrderItems());
         return "order";//trả về web order.html
     }
-    
+
     // Tạo hóa đơn và in ra
     @GetMapping("/printOrder")
     public String printOrder(Model model) {
@@ -52,18 +95,29 @@ public class ProjectController {
         return "invoice";  // HTML file cho hóa đơn
     }
 
-// Cập nhật thông tin đơn hàng
+    // Cập nhật thông tin đơn hàng
     public void createOrder() {
         LocalDate time = LocalDate.now();  // Thời gian hiện tại
         double totalAmount = newOrder.getOrderItems().stream().mapToDouble(OrderItem::getPrice).sum();  // Tính tổng số tiền
         String status = "done";  // Đơn hàng đã hoàn thành
-        User duong = new User();  // Cần thêm logic cho người dùng (ví dụ: lấy từ session)
+        User duong = new Manager();  // Cần thêm logic cho người dùng (ví dụ: lấy từ session)
 
         // Cập nhật thông tin cho newOrder
         newOrder.setOrderDate(time);
         newOrder.setTotalBill(totalAmount);
         newOrder.setStatus(status);
         newOrder.setEmployee(duong);  // Cập nhật thông tin nhân viên
+    }
+
+    // Cập nhật thời gian làm việc của staff
+    public void caculatWrokingOur(Staff staff) {
+        if (staff.getCheckInDate() != null && staff.getCheckOutDate() != null) {
+            Duration duration = Duration.between(staff.getCheckInDate(), staff.getCheckOutDate());
+            int workedHours = (int) duration.toHours();
+            int workingHours = (staff.getWorkingHours());
+            staff.setWorkingHours(workingHours += workedHours);
+        }
+
     }
 
     // Thêm sản phẩm vào đơn hàng
@@ -77,7 +131,10 @@ public class ProjectController {
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
             newOrder.getOrderItems().add(new OrderItem(product, quantity, product.getPrice() * quantity, "Lmao"));
+
+            product.setQuantity(product.getQuantity() - quantity);
         }
         return "redirect:/order";
     }
+
 }

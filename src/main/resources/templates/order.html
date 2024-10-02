@@ -19,7 +19,18 @@
         <input type="hidden" id="productId" name="productId" />
         <button type="submit">Thêm vào đơn hàng</button>
     </form>
+    <!-- <ul>
+        <li th:each="product: ${newInventory}">
+            <p>
+                Tên: <span th:text="${product.name}"></span>,
+                Quantity: <span th:text="${product.quantity}"></span>,
+                Price: <span th:text="${product.price}"></span>
+            </p>
 
+
+        </li>
+
+    </ul> -->
     <h2>Danh sách sản phẩm đã thêm vào đơn hàng</h2>
     <ul>
         <li th:each="orderItem : ${newOrderItems}">
@@ -29,7 +40,7 @@
             </p>
         </li>
     </ul>
-
+    
     <form action="/printOrder" method="get">
         <button type="submit">In hóa đơn</button>
     </form>

@@ -1,9 +1,89 @@
+html,
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 20px;
+    margin: 0;
+    height: 100%;
 }
 
-h1 {
-    color: #333;
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightskyblue;
 }
+
+/* h1 {
+    color: dodgerblue;
+} */
+h2 {}
+
+.login-container h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #007bff;
+}
+
+.login-container {
+    font-family: Arial, sans-serif;
+    /* color: #007bff; */
+    display: table-column;
+
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 3%;
+    width: 23%;
+    /* opacity: 70%; */
+    background-color: rgba(255, 255, 255, 1);
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0%;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    padding-left: 5%;
+    border-color: black;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 1.4px;
+    width: 70%;
+    height: 30px;
+    margin: 0.1%;
+    
+}
+.box:hover{
+    border-color:#0158b5 ;
+    border-width: 2px;
+}
+
+.register-link{
+   background-color: none;
+}
+.box1{
+    padding-left: 5%;
+    border-color:#007bff ;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 1.4px;
+    width: 76%;
+    height: 30px;
+    margin: 0.1%;
+}
+
+
+
+.box1:hover{
+    color: white;
+    background-color: rgba(34, 89, 255, 0.9);
+
+}
+
+

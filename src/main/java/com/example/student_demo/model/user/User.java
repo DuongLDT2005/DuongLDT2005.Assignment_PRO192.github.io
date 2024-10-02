@@ -1,10 +1,11 @@
 package com.example.student_demo.model.user;
 
-public  class User {
+public abstract class User {
    	private String id;
    	private String username;
    	private String password;
    	private String role;
+    private String shopName;
    	private String name;
    	private String email;
    	private long phonenumber;
@@ -96,6 +97,14 @@ public  class User {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     
