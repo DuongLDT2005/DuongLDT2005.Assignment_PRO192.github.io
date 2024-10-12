@@ -1,4 +1,4 @@
-package com.example.student_demo.model.user;
+package com.example.assignment.model.user;
 
 import java.util.ArrayList;
 import java.util.List;

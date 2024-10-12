@@ -1,18 +1,18 @@
-package com.example.student_demo.model.product;
+package com.example.assignment.model.product;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    private String id;
+    private long id;
     private List<Product> products ;
    
     private LocalDate	restockDate;
     public Inventory() {
         this.products=new ArrayList<>();
     }
-    public Inventory(String id,  LocalDate restockDate) {
+    public Inventory(Long id,  LocalDate restockDate) {
         this.products=new ArrayList<>();
         this.id = id;
         
@@ -23,7 +23,7 @@ public class Inventory {
         
         this.restockDate = restockDate;
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
     public List<Product> getProducts() {
@@ -34,7 +34,7 @@ public class Inventory {
         return restockDate;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Order</title>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderstyles.css">
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/orderstyles.css}">
+    <script src="/src/main/resources/static/css/script.js"></script>
+    <script th:src="@{/css/script.js}"></script>
+</head>
+
+<body>
+
+    <div class="navigator">
+        <div class="choseTable">
+
+            <h2>CHOOSE TABLE</h2>
+
+        </div>
+        <div class="choseItems">
+            <i class="fa-solid fa-mug-hot fa-xl"></i>
+            <h2>CHOOSE ITEMS</h2>
+        </div>
+    </div>
+    <div class="orderbody">
+        <div class="order-table">
+
+            <!-- <div th:each="orderitem : ${newOrderItems}" class="orderList" id="orderList">
+                
+
+            </div> -->
+            <ul>
+                <li th:each="orderItem : ${newOrderItems}">
+                    <p>Tên sản phẩm: <span th:text="${orderItem.product.name}"></span>,
+                        Số lượng: <span th:text="${orderItem.quantity}"></span>,
+                        Giá: <span th:text="${orderItem.price}"></span>
+                    </p>
+                </li>
+            </ul>
+            <div class="totalpay">
+
+            </div>
+            <form action="/printOrder" method="get" class="footer">
+                <button class="payment-button">PROCEED TO PAYMENT</button>
+            </form>
+        </div>
+        <div th:each="product: ${newInventory}" class="menu-container">
+            <div th:data-id="${product.id}" class="menu-item" id="menu-item2" onclick="submitProductForm(this)">
+                <span th:text="${product.name}"></span>
+                <span th:text="${product.price}" class="price"></span>
+                
+            </div>
+
+        </div>
+        <form id="productForm" action="/addProduct" method="post">
+            <input type="hidden" id="productId" name="productId">
+        </form>
+    </div>
+
+
+    <script>
+        function submitProductForm(productElement) {
+            var productId = productElement.getAttribute("data-id");
+            document.getElementById('productId').value = productId;
+            document.getElementById('productForm').submit();
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Order</title>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderstyles.css">
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/orderstyles.css}">
+    <script src="/src/main/resources/static/css/script.js"></script>
+    <script th:src="@{/css/script.js}"></script>
+</head>
+
+<body>
+    <div class="navigator">
+        <div class="choseTable">
+            <h2>CHOOSE TABLE</h2>
+        </div>
+        <div class="choseItems">
+            <i class="fa-solid fa-mug-hot fa-xl"></i>
+            <h2>CHOOSE ITEMS</h2>
+        </div>
+    </div>
+
+    <div class="orderbody">
+        
+        <div class="order-table">
+            <div class="orderList" id="orderList">
+                
+            </div>
+            <div class="totalpay" id="totalPay">
+                
+            </div>
+            <div class="footer">
+                <button class="payment-button">PROCEED TO PAYMENT</button>
+            </div>
+        </div>
+
+      
+        <div class="menu-container">
+            <div class="menu-item" id="menu-item1" onclick="addItemToList('Cà Phê Sữa Dừa', 25000)">
+                <span>Cà Phê Sữa Dừa</span>
+                <span class="price">25,000</span>
+            </div>
+            <div class="menu-item" id="menu-item2" onclick="addItemToList('Milo Đá Xay', 45000)">
+                <span>Milo Đá Xay</span>
+                <span class="price">45,000</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mảng lưu trữ các sản phẩm đã chọn
+        let orderItems = [];
+        let totalPrice = 0;
+
+        // Hàm thêm sản phẩm vào danh sách order
+        function addItemToList(name, price) {
+            // Thêm sản phẩm vào mảng orderItems
+            orderItems.push({ name, price });
+            totalPrice += price;
+
+            // Cập nhật giao diện
+            updateOrderList();
+            updateTotalPay();
+        }
+
+        // Hàm cập nhật danh sách sản phẩm trong giao diện
+        function updateOrderList() {
+            const orderList = document.getElementById('orderList');
+            orderList.innerHTML = ''; // Xóa nội dung cũ
+
+            orderItems.forEach((item, index) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'order-item';
+                listItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>${item.price.toLocaleString()} VND</span>
+                    <button onclick="removeItem(${index})">Remove</button>
+                `;
+                orderList.appendChild(listItem);
+            });
+        }
+
+        // Hàm cập nhật tổng tiền trong giao diện
+        function updateTotalPay() {
+            const totalPayElement = document.getElementById('totalPay');
+            totalPayElement.innerHTML = `<h3>Total: ${totalPrice.toLocaleString()} VND</h3>`;
+        }
+
+        // Hàm xóa sản phẩm khỏi danh sách order
+        function removeItem(index) {
+            // Giảm tổng tiền
+            totalPrice -= orderItems[index].price;
+
+            // Xóa sản phẩm khỏi mảng
+            orderItems.splice(index, 1);
+
+            // Cập nhật lại giao diện
+            updateOrderList();
+            updateTotalPay();
+        }
+    </script>
+</body>
+
+</html> -->

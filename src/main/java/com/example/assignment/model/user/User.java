@@ -1,28 +1,40 @@
-package com.example.student_demo.model.user;
+package com.example.assignment.model.user;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
-   	private String id;
-   	private String username;
-   	private String password;
-   	private String role;
+
+    @Id
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy=GenerationType.SEQUENCE,
+        generator="user_sequence"
+    )
+    private long id;
+    private String username;
+    private String password;
+    private String role;
     private String shopName;
-   	private String name;
-   	private String email;
-   	private long phonenumber;
-   	private boolean status;//on==true or off==false
+    private String name;
+    private String email;
+    private long phonenumber;
+    private boolean status;//on==true or off==false
 
-    public User(String email, String id, String name, String password, long phonenumber, String role, boolean status, String username) {
-        this.email = email;
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.phonenumber = phonenumber;
-        this.role = role;
-        this.status = status;
-        this.username = username;
-    }
-
-    public User(String email, String name, String password, long phonenumber, String role, boolean status, String username) {
+    public User(String shopName,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
         this.email = email;
         this.name = name;
         this.password = password;
@@ -30,12 +42,13 @@ public abstract class User {
         this.role = role;
         this.status = status;
         this.username = username;
+        this.shopName=shopName;
     }
 
     public User() {
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -67,7 +80,7 @@ public abstract class User {
         return status;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -107,6 +120,4 @@ public abstract class User {
         this.shopName = shopName;
     }
 
-    
-    
 }

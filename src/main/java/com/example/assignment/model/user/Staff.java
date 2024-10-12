@@ -1,7 +1,9 @@
-package com.example.student_demo.model.user;
+package com.example.assignment.model.user;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+@Entity
 public class Staff extends User {
 
     private int workingHours;
@@ -12,12 +14,17 @@ public class Staff extends User {
 
 
     public Staff() {
-
     }
+    
 
     public Staff(int workingHours, double wage) {
         this.workingHours = workingHours;
         this.wage = wage;
+    }
+
+    public Staff(double salary,String shopName ,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
+        super(shopName,email, name, password, phonenumber, role, status, username);
+        this.salary = salary;
     }
 
     public int getWorkingHours() {
