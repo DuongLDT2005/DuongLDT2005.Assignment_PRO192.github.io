@@ -3,31 +3,45 @@ package com.example.assignment.model.order;
 import com.example.assignment.model.product.Product;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 @Entity
 // @Table
 public class OrderItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @OneToOne
-    @JoinColumn(name="selected_product")
+    @ManyToOne
+    @JoinColumn(name="selected_product", referencedColumnName = "id")
     private Product product;
     private int quantity;
     private double price;
     private String note;
 
-    public OrderItem(Product product, int quantity, double price, String note) {
+    public OrderItem(Product product, int quantity, String note) {
         this.product = product;
         this.quantity = quantity;
-        this.price = price;
+        
+        this.note = note;
+        // this.price = product.getPrice()*quantity;
+    }
+    
+
+    public OrderItem(Order order, Product product, int quantity, String note) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
         this.note = note;
     }
+
 
     public Product getProduct() {
         return product;
@@ -38,11 +52,32 @@ public class OrderItem {
     }
 
     public double getPrice() {
-        return price;
+        return product.getPrice()*quantity;
     }
 
     public String getNote() {
         return note;
     }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
 
 }

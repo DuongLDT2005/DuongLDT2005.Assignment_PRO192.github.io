@@ -27,11 +27,6 @@
     </div>
     <div class="orderbody">
         <div class="order-table">
-
-            <!-- <div th:each="orderitem : ${newOrderItems}" class="orderList" id="orderList">
-                
-
-            </div> -->
             <ul>
                 <li th:each="orderItem : ${newOrderItems}">
                     <p>Tên sản phẩm: <span th:text="${orderItem.product.name}"></span>,
@@ -47,14 +42,14 @@
                 <button class="payment-button">PROCEED TO PAYMENT</button>
             </form>
         </div>
-        <div th:each="product: ${newInventory}" class="menu-container">
-            <div th:data-id="${product.id}" class="menu-item" id="menu-item2" onclick="submitProductForm(this)">
+
+        <div class="menu-container">
+            <div th:each="product: ${newInventory}" class="menu-item" th:data-id="${product.id}" id="menu-item2" onclick="submitProductForm(this)">
                 <span th:text="${product.name}"></span>
                 <span th:text="${product.price}" class="price"></span>
-                
             </div>
-
         </div>
+        
         <form id="productForm" action="/addProduct" method="post">
             <input type="hidden" id="productId" name="productId">
         </form>

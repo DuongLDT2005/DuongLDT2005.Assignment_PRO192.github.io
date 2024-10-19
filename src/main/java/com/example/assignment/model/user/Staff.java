@@ -2,13 +2,19 @@ package com.example.assignment.model.user;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-@Entity
-public class Staff extends User {
 
-    private int workingHours;
-    private double wage;
-    private double salary;
+
+@Entity
+@DiscriminatorValue("Staff")
+public class Staff extends User {
+    @Column(nullable=true, name="workingHours")
+    private Integer workingHours;
+    @Column(nullable=true, name="wage")
+    private Double wage;
+    private Double salary;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
@@ -27,7 +33,14 @@ public class Staff extends User {
         this.salary = salary;
     }
 
-    public int getWorkingHours() {
+    public Staff(int workingHours,double wage,double salary,String shopName ,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
+        super(shopName,email, name, password, phonenumber, role, status, username);
+        this.salary = salary;
+        this.workingHours = workingHours;
+        this.wage = wage;
+    }
+
+    public Integer getWorkingHours() {
         return workingHours;
     }
 
@@ -68,6 +81,8 @@ public class Staff extends User {
     }
 
 
+
+    
 
 
 }

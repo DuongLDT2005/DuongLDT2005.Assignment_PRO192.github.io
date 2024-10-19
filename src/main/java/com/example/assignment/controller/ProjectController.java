@@ -1,12 +1,10 @@
 package com.example.assignment.controller;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.assignment.model.order.Invoice;
 import com.example.assignment.model.order.Order;
 import com.example.assignment.model.order.OrderItem;
+import com.example.assignment.model.order.Service.InvoiceService;
+import com.example.assignment.model.order.Service.OrderService;
 import com.example.assignment.model.product.Inventory;
-import com.example.assignment.model.product.Product;
 import com.example.assignment.model.product.service.ProductService;
-import com.example.assignment.model.user.Manager;
+import com.example.assignment.model.user.Staff;
 import com.example.assignment.model.user.User;
-import com.example.assignment.model.user.UserList;
+import com.example.assignment.model.user.service.StaffService;
 import com.example.assignment.model.user.service.UserService;
 
 @Controller
@@ -29,36 +28,69 @@ public class ProjectController {
 
     private Order newOrder = new Order();
     private Inventory newInventory = new Inventory();
-    private UserList newUserList = new UserList();
+    private User currentUser;
+    // private UserList newUserList = new UserList();
 
     private final ProductService productService;
     private final UserService userService;
+    private final OrderService orderService;
+    private final InvoiceService invoiceService;
+    private final StaffService staffService;
 
     @Autowired
-    public ProjectController(ProductService productService, UserService userService) {
+    public ProjectController(ProductService productService,
+            InvoiceService invoiceService,
+            UserService userService,
+            OrderService orderService,
+            StaffService staffService) {
         this.productService = productService;
         this.userService = userService;
+        this.orderService = orderService;
+        this.invoiceService = invoiceService;
+        this.staffService = staffService;
     }
 
     // @PostConstruct
     // public void init() {
-    //     setUserInit();
+    //     setInitialValue();
     // }
     // @PostConstruct
-    // public void addUser(){
+    // public void init(){
+    //     setDefault();
     // }
+
+    // public void setDefault(){
+    //      Staff staff1=new Staff(0,0,0,"byla@coffee","phongle@gmail.com","Nguyen Huu Phong","phong123",989612290,"staff",true,"phong");
+    //     Staff staff2=new Staff(0,0,0,"hadilao@hotpot","diemquynh@gmail.com","Le Thi Diem Quynh","quynh123",989612290,"staff",true,"quynh");
+    //     userService.addUser(staff2);
+    //     userService.addUser(staff1);
+    // }
+
     public void createOrder() {
         LocalDate time = LocalDate.now();  // Thời gian hiện tại
         double totalAmount = newOrder.getOrderItems().stream().mapToDouble(OrderItem::getPrice).sum();  // Tính tổng số tiền
         String status = "done";  // Đơn hàng đã hoàn thành
-        User duong = new Manager();  // Cần thêm logic cho người dùng (ví dụ: lấy từ session)
+        // User duong1 = staffService.getStaff().get(5);
+        // User duong1 = new Manager();
+        // staffService.getStaff().get(9);
+
+        Staff duong1 = new Staff();
+        if (currentUser != null) {
+            currentUser = userService.updateUser(currentUser);  // Gắn lại currentUser trước khi sử dụng nó
+        }
 
         // Cập nhật thông tin cho newOrder
         newOrder.setOrderDate(time);
         newOrder.setTotalBill(totalAmount);
         newOrder.setStatus(status);
-        // newOrder.setEmployee(duong);  // Cập nhật thông tin nhân viên
+        newOrder.setEmployee(currentUser);
+
     }
+
+    // @Transactional
+    // public void updateUser(User user) {
+    //     userService.merge(user);
+    // }
 
     @GetMapping("/")
     public String getLoginPage() {
@@ -69,7 +101,8 @@ public class ProjectController {
     public String inputInformation(@RequestParam String shopName, @RequestParam String username, @RequestParam String password, Model model) {
         for (User user : userService.getUser()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getShopName().equals(shopName)) {
-                return "redirect:/order";
+                currentUser = user;
+                return "redirect:/order(1)";
 
             }
         }
@@ -84,7 +117,7 @@ public class ProjectController {
         // setInitialValue();
         model.addAttribute("newInventory", productService.getProducts());//trả về list của product->newInventory
         model.addAttribute("newOrderItems", newOrder.getOrderItems());
-        return "order(1)";//trả về web order.html
+        return "order(1)";//trả về web order(1).html
     }
 
     // Tạo hóa đơn và in ra
@@ -92,67 +125,18 @@ public class ProjectController {
     public String printOrder(Model model) {
         createOrder();  // Cập nhật thông tin cho newOrder
         Invoice newInvoice = new Invoice(newOrder.getOrderDate(), newOrder, "Qr code", newOrder.getTotalBill());
-        model.addAttribute("invoice", newInvoice);
-        // newOrder.setOrderItems(null);
+        // ArrayList<OrderItem> orderItems = new ArrayList<>(newOrder.getOrderItems());
+        // newInvoice.getOrder().setOrderItems(orderItems);
+        invoiceService.addInvoice(newInvoice);
+        model.addAttribute("invoice", invoiceService.getInvoice().get(invoiceService.getInvoice().size()-1));
+        // model.addAttribute("invoice", newInvoice);
+        newOrder = new Order();
         return "invoice";  // HTML file cho hóa đơn
-    }
-
-    @PostMapping("/addOrderItem")
-    public String addOrderItem(@RequestParam long productId, @RequestParam int quantity) {
-        // System.out.println("Product ID: " + productId);
-        // System.out.println("Quantity: " + quantity);
-        Optional<Product> productOpt = newInventory.getProducts().stream()
-                .filter(p -> p.getId() == (productId))
-                .findFirst();
-
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-            newOrder.getOrderItems().add(new OrderItem(product, quantity, product.getPrice() * quantity, "Lmao"));
-
-            product.setQuantity(product.getQuantity() - quantity);
-        }
-        return "redirect:/order";
     }
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam long productId) {
-        Optional<Product> productOpt = productService.getProducts().stream()
-                .filter(p -> p.getId() == (productId))
-                .findFirst();
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-            newOrder.getOrderItems().add(new OrderItem(product, 1, product.getPrice() * 1, "lag"));
-
-            // product.setQuantity(product.getQuantity() - quantity);
-        }
+        orderService.addOrderItem(productId, newOrder);
         return "redirect:/order(1)";
     }
-
-    @CrossOrigin(origins = "http://localhost:5500") // Adjust if needed
-    @GetMapping("/api/product")
-    public Optional<Product> getProductById(@RequestParam long id) {
-        return productService.getProducts().stream()
-                .filter(product -> product.getId() == id)
-                .findFirst();
-    }
-
-    // @PostMapping("/addOrderItem")
-    // @ResponseBody  // Để trả về JSON
-    // public OrderItem addOrderItem(@RequestParam long productId, @RequestParam int quantity) {
-    //     Optional<Product> productOpt = productService.getProducts().stream()
-    //             .filter(p -> p.getId() == (productId))
-    //             .findFirst();
-
-    //     if (productOpt.isPresent()) {
-    //         Product product = productOpt.get();
-    //         OrderItem newOrderItem = new OrderItem(product, quantity, product.getPrice() * quantity, "Lmao");
-
-    //         newOrder.getOrderItems().add(newOrderItem);
-    //         product.setQuantity(product.getQuantity() - quantity);
-
-    //         return newOrderItem;  // Trả về sản phẩm đã thêm
-    //     }
-    //     return null;
-    // }
-
 }

@@ -24,4 +24,9 @@ public class UserService{
         userRepository.save(user);
     }
 
+    public User updateUser(User user) {
+        // Reattaches the detached entity and updates it in the database
+        return userRepository.save(user);  // save() works as an upsert (insert if new, update if exists)
+    }
+
 }

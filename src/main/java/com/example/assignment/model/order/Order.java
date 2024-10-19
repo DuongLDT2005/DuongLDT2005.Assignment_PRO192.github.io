@@ -12,14 +12,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="`order`")
+@Table(name = "`order`")
 public class Order {
+
     @Id
     @SequenceGenerator(
             name = "order_sequence",
@@ -31,19 +32,18 @@ public class Order {
             generator = "order_sequence"
     )
 
-    
     private long id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="order_id",referencedColumnName="id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private List<OrderItem> orderItems;
 
     private LocalDate orderDate;
     private double totalBill;
     private String status;//in-process, proccessed, canceled
-    
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="staff_id")
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private User employee;
 
     public Order(User employee, LocalDate orderDate, String status, double totalBill) {
@@ -53,8 +53,6 @@ public class Order {
         this.status = status;
         this.totalBill = totalBill;
     }
-
-   
 
     public Order() {
         this.orderItems = new ArrayList<>();
@@ -101,10 +99,10 @@ public class Order {
     }
 
     public List<OrderItem> getOrderItems() {
-        return orderItems;
+        return this.orderItems;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
+    public void setOrderItems(ArrayList<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 

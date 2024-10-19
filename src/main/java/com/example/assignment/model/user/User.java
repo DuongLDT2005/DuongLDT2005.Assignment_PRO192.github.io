@@ -1,5 +1,8 @@
 package com.example.assignment.model.user;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +15,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="user")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public abstract class User {
 
     @Id
@@ -27,6 +31,8 @@ public abstract class User {
     private long id;
     private String username;
     private String password;
+
+    @Column(insertable=false, updatable=false)
     private String role;
     private String shopName;
     private String name;

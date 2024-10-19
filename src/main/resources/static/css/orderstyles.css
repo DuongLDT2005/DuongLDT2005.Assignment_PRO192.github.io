@@ -6,17 +6,27 @@ body {
 
 body {
     width: 100%;
-   
+
 
 }
-h2{
+
+h2 {
     font-family: Arial, sans-serif;
 }
 
 .menu-container {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    align-content: flex-start; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    /* 3 phần tử trên mỗi hàng */
+   grid-auto-rows: 14%;
+
+
+    overflow-y: auto;
+    gap: 1%;
+    
     background-color: lightblue;
     width: 56%;
     padding: 1%;
@@ -44,12 +54,16 @@ h2{
     color: white;
     font-weight: bold;
     text-align: center;
+    margin: 0.1%;
+
+    /* max-width: 100%; */
+    box-sizing: border-box;
 }
 
 .choseTable {
     width: 42%;
     height: 100%;
-    background-color: rgb(50,205,50);
+    background-color: rgb(50, 205, 50);
     display: flex;
     text-align: center;
     align-items: center;
@@ -69,7 +83,8 @@ h2{
     justify-content: center;
     font-weight: bold;
 }
-.fa-mug-hot{
+
+.fa-mug-hot {
     display: flex;
     text-align: center;
     align-items: center;
@@ -89,20 +104,24 @@ h2{
     color: #333;
     margin-top: 5px;
 }
-.orderList{
+
+.orderList {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
 }
-.orderbody{
+
+.orderbody {
     height: 94%;
     display: flex;
     flex-direction: row;
 }
-.order-table{
-    width:42% ;
+
+.order-table {
+    width: 42%;
     height: 100%;
     background-color: azure;
 }
+
 .footer {
     background-color: red;
     text-align: center;
@@ -113,6 +132,7 @@ h2{
     height: 7%;
     width: 42%;
 }
+
 .payment-button {
     background-color: red;
     width: 100%;
@@ -123,7 +143,22 @@ h2{
     justify-content: center;
     height: 100%;
 }
+
 .payment-button:hover {
     background-color: rgb(187, 31, 31);
     color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 phần tử trên mỗi hàng cho màn hình nhỏ hơn */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        grid-template-columns: repeat(1, 1fr);
+        /* 1 phần tử trên mỗi hàng cho màn hình điện thoại */
+    }
 }
