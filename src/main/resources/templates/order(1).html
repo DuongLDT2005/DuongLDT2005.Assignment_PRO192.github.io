@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Order</title>
-    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderstyles.css">
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderStyle.css">
     <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/orderstyles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/orderStyle.css}">
     <script src="/src/main/resources/static/css/script.js"></script>
     <script th:src="@{/css/script.js}"></script>
 </head>
@@ -17,7 +17,7 @@
     <div class="navigator">
         <div class="choseTable">
 
-            <h2>CHOOSE TABLE</h2>
+            <h2>ORDER ITEMS LIST</h2>
 
         </div>
         <div class="choseItems">
@@ -27,16 +27,26 @@
     </div>
     <div class="orderbody">
         <div class="order-table">
-            <ul>
-                <li th:each="orderItem : ${newOrderItems}">
-                    <p>Tên sản phẩm: <span th:text="${orderItem.product.name}"></span>,
-                        Số lượng: <span th:text="${orderItem.quantity}"></span>,
-                        Giá: <span th:text="${orderItem.price}"></span>
-                    </p>
-                </li>
-            </ul>
-            <div class="totalpay">
+            <div class="orderItemBar" th:each="orderItem : ${newOrderItems}" th:data-id="${orderItem.id}">
+                <i onclick="deleteitem(this)" class="fa-solid fa-trash-can fa-xl"></i>
+                <div class="nameAndprice">
+                    <h2 th:text="${orderItem.product.name}"></h2>
+                    <div class="price" th:text="${orderItem.price}">
+                    </div>
+                </div>
+                <div class="quantity">
+                    <form id="quantityForm" th:id="'quantityForm_' + ${orderItem.id}" action="/changeQuantity"
+                        method="post">
+                        <input type="hidden" name="orderItemId" th:value="${orderItem.id}" required />
+                        <input class="quantityT" type="number" min="0" step="1" name="quantity"
+                            th:value="${orderItem.quantity}" required onkeydown="submitOnEnter(event, this.form)"
+                            onfocusout="submitOnFocusOut(this.form)" /><br>
+                        <span th:if="${inputError}" th:text="${inputError}" class="error"></span>
 
+                    </form>
+                </div>
+            </div>
+            <div class="totalpay">
             </div>
             <form action="/printOrder" method="get" class="footer">
                 <button class="payment-button">PROCEED TO PAYMENT</button>
@@ -44,14 +54,19 @@
         </div>
 
         <div class="menu-container">
-            <div th:each="product: ${newInventory}" class="menu-item" th:data-id="${product.id}" id="menu-item2" onclick="submitProductForm(this)">
+            <div th:each="product: ${newInventory}" class="menu-item" th:data-id="${product.id}" id="menu-item2"
+                onclick="submitProductForm(this)">
                 <span th:text="${product.name}"></span>
                 <span th:text="${product.price}" class="price"></span>
             </div>
         </div>
-        
-        <form id="productForm" action="/addProduct" method="post">
+
+        <form id="productForm" action="/addProductToOrder" method="post">
             <input type="hidden" id="productId" name="productId">
+        </form>
+
+        <form id="deleteForm" action="/deleteItem" method="post">
+            <input type="hidden" id="orderItemId" name="id">
         </form>
     </div>
 
@@ -61,117 +76,32 @@
             var productId = productElement.getAttribute("data-id");
             document.getElementById('productId').value = productId;
             document.getElementById('productForm').submit();
+
         }
+        function submitOnEnter(event, form) {
+            var orderItemId = form.querySelector('[name="orderItemId"]').value;
+            console.log("OrderItemId before submit (Enter):", orderItemId);
+            if (event.key === "Enter" && orderItemId) {
+                event.preventDefault();
+                form.submit();
+            }
+        }
+
+        function submitOnFocusOut(form) {
+            var orderItemId = form.querySelector('[name="orderItemId"]').value;
+            console.log("OrderItemId before submit (FocusOut):", orderItemId);
+            if (orderItemId) {
+                form.submit();
+            }
+        }
+
+        function deleteitem(orderElement) {
+            var orderId = orderElement.parentNode.getAttribute("data-id");
+            document.getElementById('orderItemId').value = orderId;
+            document.getElementById('deleteForm').submit();
+        }
+
     </script>
 </body>
 
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Order</title>
-    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderstyles.css">
-    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/orderstyles.css}">
-    <script src="/src/main/resources/static/css/script.js"></script>
-    <script th:src="@{/css/script.js}"></script>
-</head>
-
-<body>
-    <div class="navigator">
-        <div class="choseTable">
-            <h2>CHOOSE TABLE</h2>
-        </div>
-        <div class="choseItems">
-            <i class="fa-solid fa-mug-hot fa-xl"></i>
-            <h2>CHOOSE ITEMS</h2>
-        </div>
-    </div>
-
-    <div class="orderbody">
-        
-        <div class="order-table">
-            <div class="orderList" id="orderList">
-                
-            </div>
-            <div class="totalpay" id="totalPay">
-                
-            </div>
-            <div class="footer">
-                <button class="payment-button">PROCEED TO PAYMENT</button>
-            </div>
-        </div>
-
-      
-        <div class="menu-container">
-            <div class="menu-item" id="menu-item1" onclick="addItemToList('Cà Phê Sữa Dừa', 25000)">
-                <span>Cà Phê Sữa Dừa</span>
-                <span class="price">25,000</span>
-            </div>
-            <div class="menu-item" id="menu-item2" onclick="addItemToList('Milo Đá Xay', 45000)">
-                <span>Milo Đá Xay</span>
-                <span class="price">45,000</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Mảng lưu trữ các sản phẩm đã chọn
-        let orderItems = [];
-        let totalPrice = 0;
-
-        // Hàm thêm sản phẩm vào danh sách order
-        function addItemToList(name, price) {
-            // Thêm sản phẩm vào mảng orderItems
-            orderItems.push({ name, price });
-            totalPrice += price;
-
-            // Cập nhật giao diện
-            updateOrderList();
-            updateTotalPay();
-        }
-
-        // Hàm cập nhật danh sách sản phẩm trong giao diện
-        function updateOrderList() {
-            const orderList = document.getElementById('orderList');
-            orderList.innerHTML = ''; // Xóa nội dung cũ
-
-            orderItems.forEach((item, index) => {
-                const listItem = document.createElement('div');
-                listItem.className = 'order-item';
-                listItem.innerHTML = `
-                    <span>${item.name}</span>
-                    <span>${item.price.toLocaleString()} VND</span>
-                    <button onclick="removeItem(${index})">Remove</button>
-                `;
-                orderList.appendChild(listItem);
-            });
-        }
-
-        // Hàm cập nhật tổng tiền trong giao diện
-        function updateTotalPay() {
-            const totalPayElement = document.getElementById('totalPay');
-            totalPayElement.innerHTML = `<h3>Total: ${totalPrice.toLocaleString()} VND</h3>`;
-        }
-
-        // Hàm xóa sản phẩm khỏi danh sách order
-        function removeItem(index) {
-            // Giảm tổng tiền
-            totalPrice -= orderItems[index].price;
-
-            // Xóa sản phẩm khỏi mảng
-            orderItems.splice(index, 1);
-
-            // Cập nhật lại giao diện
-            updateOrderList();
-            updateTotalPay();
-        }
-    </script>
-</body>
-
-</html> -->

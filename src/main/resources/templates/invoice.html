@@ -1,20 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Invoice</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/invoiceStyle.css}">
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/invoiceStyle.css">
+    
 </head>
-<body>
-    <h1>Invoice</h1>
-    <p>Order Date: <span th:text="${invoice.invoiceDate}"></span></p>
-    <p>Total Bill: <span th:text="${invoice.totalAmount}"></span></p>
 
-    <h2>Order Items</h2>
-    <ul>
-        <li th:each="item : ${invoice.order.orderItems}">
-            <p>Product: <span th:text="${item.product.name}"></span></p>
-            <p>Quantity: <span th:text="${item.quantity}"></span></p>
-            <p>Price: <span th:text="${item.price}"></span></p>
-        </li>
-    </ul>
+<body>
+    <div class="bill-container">
+        <h1 th:text="${shopName}"></h1>
+        <h2>INVOICE</h2>
+        <div class="bill-details">
+            <p>Number: <span th:text="${invoice.id}"></span></p>
+            <p>Order Date: <span th:text="${invoice.invoiceDate}"></span></p>
+            <p>Staff: <span th:text="${staffName}"></span></p>
+        </div>
+        <div class="bill-table">
+            <h2>Order Items</h2>
+            <hr>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                <tr class="itemTable" th:each="item : ${invoice.order.orderItems}">
+                    <td><span th:text="${item.product.name}"></span></td>
+                    <td><span th:text="${item.quantity}"></span></td>
+                    <td><span class="money" th:text="${item.product.price}"></span></td>
+                    <td><span class="money" th:text="${item.price}"></span></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-bottom: 1px solid #000;"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>TOTAL BILL</strong></td>
+                    <td><span class="money" th:text="${invoice.totalAmount}"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="bill-footer">
+            <p><strong>Thank you & See you again!</strong></p>
+        </div>
+
+    </div>
+    <div class="button-container">
+        <button class="return-button" onclick="mainpage()">RETURN</button>
+    </div>
+
 </body>
+<script >
+    let x = document.querySelectorAll(".money");
+for (let i = 0, len = x.length; i < len; i++) {
+    let num = Number(x[i].innerHTML)
+        .toLocaleString('en');
+    x[i].innerHTML = num;
+    x[i].classList.add("currSign");
+}
+function mainpage(){
+    window.location.replace('order(1)');
+}
+</script>
 </html>

@@ -37,10 +37,10 @@ public abstract class User {
     private String shopName;
     private String name;
     private String email;
-    private long phonenumber;
+    private String phonenumber;
     private boolean status;//on==true or off==false
 
-    public User(String shopName,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
+    public User(String shopName,String email, String name, String password, String phonenumber, String role, boolean status, String username) {
         this.email = email;
         this.name = name;
         this.password = password;
@@ -78,7 +78,7 @@ public abstract class User {
         return email;
     }
 
-    public long getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
@@ -110,7 +110,7 @@ public abstract class User {
         this.email = email;
     }
 
-    public void setPhonenumber(long phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 

@@ -1,0 +1,156 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: lightskyblue;
+}
+
+/* h1 {
+    color: dodgerblue;
+} */
+h2 {}
+
+.login-container h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #007bff;
+}
+
+.login-container {
+    font-family: Arial, sans-serif;
+    /* color: #007bff; */
+    display: table-column;
+
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 3%;
+    width: 23%;
+    /* opacity: 70%; */
+    background-color: rgba(255, 255, 255, 1);
+}
+.role{
+    display: grid;
+    /* border-color: black;
+    border-style: solid; */
+    border-radius: 6px;
+    border-width: 1.4px;
+    width: 70%;
+    height: 30px;
+    margin-bottom: 1%;
+    grid-template-columns: 1fr 1fr;
+}
+.staff{
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-color: black;
+    border-style: solid;
+    border-radius: 6px;
+    
+    border-width: 1.4px;
+}
+.manager{
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-color: black;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 1.4px;
+}
+
+#signin-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0%;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    padding-left: 5%;
+    border-color: black;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 1.4px;
+    width: 70%;
+    height: 30px;
+    margin: 0.05%;
+
+}
+
+.box:hover {
+    border-color: #0158b5;
+    border-width: 2px;
+}
+
+.register-link {
+    background-color: none;
+}
+
+.box1 {
+    padding-left: 5%;
+    border-color: #007bff;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 1.4px;
+    width: 76%;
+    height: 30px;
+    margin: 0.1%;
+}
+
+
+
+.box1:hover {
+    color: white;
+    background-color: rgba(34, 89, 255, 0.9);
+
+}
+
+.invalidUsername {
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    height: 6%;
+    width: 20%;
+    color: white;
+    background-color: rgb(255, 70, 70);
+
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 79%;
+    }
+
+    .invalidUsername {
+        width: 40%;
+    }
+}
+
+@media (max-width: 800px) {
+    .login-container {
+        width: 53%;
+    }
+
+    .invalidUsername {
+        width: 30%;
+    }
+}

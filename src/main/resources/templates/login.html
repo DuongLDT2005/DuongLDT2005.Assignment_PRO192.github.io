@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/loginStyle.css">
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/loginStyle.css}">
 
-    <title>HOME</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -20,11 +20,11 @@
             <input type="text" name="username" class="box" placeholder="Enter your username" required/><br>
             <input type="password" name="password" class="box" placeholder="Enter your password" required/><br>
             <button type="submit" class="box1 login-button">Login</button>
-            <p class="register-link">Don't hava an account? <a href="register.html">Sign up here</a></p>
+            <p class="register-link">Don't have an account? <a href="register.html">Sign up here</a></p>
         </form>
         
     </div>
-    <div th:if="${loginError}" style="color: red;">
+    <div th:if="${loginError}"  class="invalidUsername">
         Invalid username or password. Please try again.
     </div>
     

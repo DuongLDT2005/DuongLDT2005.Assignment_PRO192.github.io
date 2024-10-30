@@ -6,38 +6,41 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-
 @Entity
 @DiscriminatorValue("Staff")
 public class Staff extends User {
-    @Column(nullable=true, name="workingHours")
+
+    @Column(nullable = true, name = "workingHours")
     private Integer workingHours;
-    @Column(nullable=true, name="wage")
+    @Column(nullable = true, name = "wage")
     private Double wage;
     private Double salary;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-
     public Staff() {
     }
-    
 
     public Staff(int workingHours, double wage) {
         this.workingHours = workingHours;
         this.wage = wage;
     }
 
-    public Staff(double salary,String shopName ,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
-        super(shopName,email, name, password, phonenumber, role, status, username);
+    public Staff(double salary, String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
+        super(shopName, email, name, password, phonenumber, role, status, username);
         this.salary = salary;
     }
+    
 
-    public Staff(int workingHours,double wage,double salary,String shopName ,String email, String name, String password, long phonenumber, String role, boolean status, String username) {
-        super(shopName,email, name, password, phonenumber, role, status, username);
+    public Staff(int workingHours, double wage, double salary, String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
+        super(shopName, email, name, password, phonenumber, role, status, username);
         this.salary = salary;
         this.workingHours = workingHours;
         this.wage = wage;
+    }
+
+    public Staff(String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
+        super(shopName, email, name, password, phonenumber, role, status, username);
     }
 
     public Integer getWorkingHours() {
@@ -79,10 +82,5 @@ public class Staff extends User {
     public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
-
-
-
-    
-
 
 }

@@ -28,7 +28,7 @@ public class Invoice {
     )
     private long id;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="order_id")
     private Order order;
     

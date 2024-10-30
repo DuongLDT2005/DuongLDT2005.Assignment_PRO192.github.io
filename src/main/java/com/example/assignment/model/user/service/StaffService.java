@@ -36,6 +36,7 @@ public class StaffService {
         return staffList;
     }
 
+
     public void setCheckInTime(Staff staff) {
         LocalDate time = LocalDate.now();
         staff.setCheckInDate(time);
@@ -57,6 +58,7 @@ public class StaffService {
         }
 
     }
+
 
     /*
         take order:

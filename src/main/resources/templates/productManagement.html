@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODUCT MANAGEMENT</title>
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/productManagementStyle.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/productManagementStyle.css}">
+    <script src="/src/main/resources/static/script/test.js" defer></script>
+</head>
+
+<body>
+    <div class="navigator">
+        <img src="/diepluc.jpg" alt="Avatar diep luc" onclick="returnManage()">
+        <div class="inventory" onclick="returnInventory()">
+            <h4>Inventory</h4>
+        </div>
+        <div class="transaction" onclick="returnTransaction()">
+            <h4>Transactions</h4>
+        </div>
+        <div class="staff" onclick="returnStaff()">
+            <h4>Staff</h4>
+        </div>
+    </div>
+    <div class="container">
+        <div class="hader">
+            <div class="addProduct" onclick="addProduct()">
+                <i class="fa-solid fa-plus"></i>
+                <h3>Add product</h3>
+            </div>
+        </div>
+        <div class="product-detail">
+            <table>
+                <tr>
+                    <th class="id">Product ID</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Cost</th>
+                    <th>Quantity</th>
+                </tr>
+                <tr th:each="product:${newInventory}">
+                    <td><span class="id" th:text="${product.id}"></span></td>
+                    <td><span th:text="${product.name}"></span></td>
+                    <td><span th:text="${product.price}"></span></td>
+                    <td><span th:text="${product.cost}"></span></td>
+                    <td><span th:text="${product.quantity}"></span></td>
+
+                </tr>
+
+
+            </table>
+        </div>
+</body>
+<script>
+    function addProduct() {
+        window.location.replace('addProduct');
+    }
+    function returnInventory(){
+        window.location.replace('productManagement');
+    }
+    function returnManage(){
+        window.location.replace('manage');
+    }
+</script>
+
+</html>

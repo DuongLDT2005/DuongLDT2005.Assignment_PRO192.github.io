@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/signinStyle.css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/signinStyle.css}">
+
+    <title>Login</title>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Sign up</h2>
+        <form th:action="@{/signIn}" method="post" id="signin-form">
+            <div class="role">
+                <div id="staff" class="staff" onclick="document.getElementById('shopname').setAttribute('style','display:none;')">Staff</div>
+                <div id="manager" class="manager" onclick="document.getElementById('shopname').removeAttribute('style','display:none;')">Manager</div>
+            </div>
+            <input type="text" id="shopname" name="shopName" class="box" placeholder="Enter your branch" required/><br><!-- xuat hien khi role la manager -->
+            <input type="text" name="email" class="box" placeholder="Enter your email" required/><br>
+            <input type="text" name="phoneNumber" class="box" placeholder="Enter your phone number" required/><br>
+            <input type="text" name="username" class="box" placeholder="Enter your username" required/><br>
+            <input type="password" name="password" class="box" placeholder="Enter your password" required/><br>
+            <input type="password" name="passwordConfirm" class="box" placeholder="Enter your password again" required/><br>
+            <button type="submit" class="box1 login-button">Login</button>
+        </form>
+        
+    </div>
+    <div th:if="${loginError}"  class="invalidUsername">
+        Invalid username or password. Please try again.
+    </div>
+    
+<script>
+
+
+</script>
+</body>
+
+</html>

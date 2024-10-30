@@ -23,6 +23,7 @@ public class Manager extends User {
     @JoinColumn(name = "inventory_id", referencedColumnName = "id")
     private Inventory inventoryManager;
 
+
     //constructor rong~
     public Manager() {
         this.staffList = new ArrayList<>();
@@ -30,24 +31,13 @@ public class Manager extends User {
     }
 
     //constructor chinh'
-    public Manager(String shopName, String email, String name, String password, long phonenumber, String role, boolean status, String username) {
+    public Manager(String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
         super(shopName, email, name, password, phonenumber, role, status, username);
         this.staffList = new ArrayList<>();
         this.inventoryManager = new Inventory();
     }
 
-    // //ti nua xoa :v
-    // public Manager(Inventory inventoryManager, List<Staff> staffList, String email, String id, String name, String password, long phonenumber, String role, boolean status, String username) {
-    //     super(email, id, name, password, phonenumber, role, status, username);
-    //     this.inventoryManager = inventoryManager;
-    //     this.staffList = staffList;
-    // }
-    //phuc vu cho viec chuyen giao nguoi manager(khong phai quan tam)
-    // public Manager(Inventory inventoryManager, List<Staff> staffList, String email, String name, String password, long phonenumber, String role, boolean status, String username) {
-    //     super(email, name, password, phonenumber, role, status, username);
-    //     this.inventoryManager = inventoryManager;
-    //     this.staffList = staffList;
-    // }
+    
     public List<Staff> getStaffList() {
         return staffList;
     }

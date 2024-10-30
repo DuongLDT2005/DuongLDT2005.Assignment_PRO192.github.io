@@ -5,20 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Inventory {
     @Id
+    @Column(nullable=true)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="product_id",referencedColumnName="id")
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
     private List<Product> products ;
    
+    @Column(name="restock_date")
     private LocalDate	restockDate;
     public Inventory() {
         this.products=new ArrayList<>();
@@ -53,7 +54,6 @@ public class Inventory {
         this.products = products;
     }
 
-    
 
     public void setRestockDate(LocalDate restockDate) {
         this.restockDate = restockDate;

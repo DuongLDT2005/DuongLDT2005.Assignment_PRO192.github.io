@@ -34,8 +34,9 @@ public class Order {
 
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    // @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
+    // @JoinColumn(name = "order_id", referencedColumnName = "id")
     private List<OrderItem> orderItems;
 
     private LocalDate orderDate;
@@ -102,7 +103,7 @@ public class Order {
         return this.orderItems;
     }
 
-    public void setOrderItems(ArrayList<OrderItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
