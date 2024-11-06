@@ -12,7 +12,6 @@ import com.example.assignment.model.order.Invoice;
 import com.example.assignment.model.order.Service.InvoiceService;
 import com.example.assignment.model.product.Inventory;
 import com.example.assignment.model.product.Product;
-import com.example.assignment.model.product.service.InventoryService;
 import com.example.assignment.model.product.service.ProductService;
 import com.example.assignment.model.user.Manager;
 import com.example.assignment.model.user.Staff;
@@ -26,13 +25,16 @@ public class ManagerServices {
     private Inventory inventoryManager;
     private InvoiceService invoiceService;
     private ProductService productService;
-    private InventoryService inventoryService;
+
 
     @Autowired
-    public ManagerServices(StaffService staffService, InvoiceService invoiceService,InventoryService inventoryService) {
+    public ManagerServices(
+            StaffService staffService,
+            InvoiceService invoiceService,
+            UserService userService) {
         this.staffService = staffService;
         this.invoiceService = invoiceService;
-        this.inventoryService=inventoryService;
+        this.userService = userService;
     }
 
     public void removeStaff(long id) {
@@ -49,10 +51,6 @@ public class ManagerServices {
 
     public List<Product> getListProduct(Manager manager) {
         return manager.getInventoryManager().getProducts();
-    }
-
-    public void removeProduct(){
-        
     }
 
     public double getStaffSalary(long id) {
@@ -101,9 +99,41 @@ public class ManagerServices {
         return total;
     }
 
-    public double getTotalProfit() {
-        double totalProfit = 0;
-        return totalProfit;
+    public long findStaffByEmailAndNumber(String email, String phonenumber, Manager currentManager) {
+        String shopNameOfManager = currentManager.getShopName();
+        for (User staff : staffService.getStaff()) {
+            if (staff.getEmail().equals(email) && staff.getPhonenumber().equals(phonenumber)) {
+                if (staff.getShopName()==null) {
+                    return staff.getId();//da tim thay staff<3
+                }
 
+                if (staff.getShopName().equals(shopNameOfManager)) {
+                    return -1;//staff da ton tai trong cua hang
+                }
+                return staff.getId();//da tim thay staff<3
+            }
+        }
+        return -2;//staff khong ton tai
     }
+
+    public void applyStaffByManager(long id, Manager currentManager) {
+        String shopNameOfManager = currentManager.getShopName();
+        User staff = userService.findUser(id);
+        if (staff.getShopName() == null) {
+            staff.setShopName(shopNameOfManager);
+            userService.addUser(staff);
+        } else {
+            Staff newuser = new Staff();
+            newuser.setUsername(staff.getUsername());
+            newuser.setPassword(staff.getPassword());
+            newuser.setRole(staff.getRole());
+            newuser.setName(staff.getName());
+            newuser.setEmail(staff.getEmail());
+            newuser.setPhonenumber(staff.getPhonenumber());
+            newuser.setShopName(shopNameOfManager);
+            userService.addUser(newuser);
+        }
+    }
+
+
 }

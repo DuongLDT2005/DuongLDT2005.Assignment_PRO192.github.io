@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager</title>
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/managerStyle.css" th:href="@{/css/managerStyle.css}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/script/chart.js" defer></script>
@@ -24,22 +25,20 @@
         <div class="staff" onclick="returnStaff()">
             <h4>Staff</h4>
         </div>
+        <i onclick="logout()" class="fa-solid fa-right-from-bracket"></i>
+        <form id="id-logout" action="/logOut" method="post">
+            <input  type="hidden">
+        </form>
     </div>
     <div class="revenueStatic">
         <div class="topSold">
-            <h2>Top Solds List</h2>
+            <h2>Best Sellers</h2>
                 <hr style="width:76%;text-align:left;margin-left:0">
                 <div class="productbar" th:each="product : ${topSoldsList}">
                     <div class="productName" th:text="${product.name}"></div>
                     <div class="productQuantity" th:text="${product.quantity}"></div>
                 </div>
         </div>
-
-        <!-- <pre id="revenueData">[{"date":"2024-10-20","revenue":5000}, {"date":"2024-10-19","revenue":3000}]</pre> -->
-        <!-- <div th:each="DateAndRevenue : ${revenueList}">
-            
-
-        </div> -->
         <div class="soldChart">
             <pre id="revenueValue" th:text="${revenue}"></pre>
             <canvas id="myChart"></canvas>
@@ -60,6 +59,13 @@
     }
     function returnManage(){
         window.location.replace('manage');
+    }
+
+    function returnStaff() {
+        window.location.replace('staffManagement');
+    }
+    function logout(){
+        document.getElementById('id-logout').submit();
     }
 
 </script>

@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 @Entity
-// @Table
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +32,6 @@ public class OrderItem {
         this.quantity = quantity;
         
         this.note = note;
-        // this.price = product.getPrice()*quantity;
     }
     
 

@@ -28,33 +28,40 @@
             <input  type="hidden">
         </form>
     </div>
+    <form id="idform" action="/getProductById" method="post">
+        <input id="id" name="id" type="hidden">
+    </form>
+
     <span th:if="${nameError}" th:text="${nameError}" class="error"></span>
     <span th:if="${priceError}" th:text="${priceError}" class="error"></span>
     <div class="showDetails">
         <form class="addProductForm" action="/addProduct" method="post">
-            <input type="text" name="name" class="formName" placeholder="Product Name" required />
-            <input type="text" name="category" class="formCategory" placeholder="Category" required />
-            <input type="number" name="quantity" class="formQuantity" placeholder="Quantity" min="0" required />
-            <input type="number" name="cost" class="formCost" placeholder="Cost" min="0" step="0.1" required />
-            <input type="number" name="price" class="formPrice" placeholder="Price" min="0" step="0.1" required />
-            <textarea class="formDes" name="description" placeholder="Description" required></textarea>
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <input id="name" type="text" name="name" class="formName" placeholder="Product Name"
+                th:value="${product.name}" required />
+            <input type="text" name="category" class="formCategory" placeholder="Category" th:value="${product.category}" required />
+            <input type="number" name="quantity" class="formQuantity" placeholder="Quantity" min="0" th:value="${product.quantity}" required />
+            <input type="number" name="cost" class="formCost" placeholder="Cost" min="0" step="0.1" th:value="${product.cost}" required />
+            <input type="number" name="price" class="formPrice" placeholder="Price" min="0" step="0.1" th:value="${product.price}" required />
+            <textarea class="formDes" name="description" placeholder="Description" th:text="${product.description}" required></textarea>
             <button class="returnButton" onclick="returnToManage()">Return</button>
+            <div onclick="deleteProduct()" class="deleteButton">Delete</div>
             <button type="submit" class="saveButton">Save</button>
         </form>
-
-
-
+        <form id="deleteForm" action="/deleteProduct" method="post">
+            <input id="iddelete" name="id" type="hidden">
+        </form>
         
     </div>
 </body>
 <script>
-    function returnToManage(){
+    function returnToManage() {
         window.location.replace('productManagement');
     }
-    function returnInventory(){
+    function returnInventory() {
         window.location.replace('productManagement');
     }
-    function returnManage(){
+    function returnManage() {
         window.location.replace('manage');
     }
 
@@ -62,10 +69,22 @@
         window.location.replace('staffManagement');
     }
 
+    function deleteProduct(){
+        document.getElementById('iddelete').value=data;
+        document.getElementById('deleteForm').submit();
+    }
+
+    const data = sessionStorage.getItem('data');
+    const processed = sessionStorage.getItem('processed');
+
+    if (data && !processed) {
+        document.getElementById('id').value = data;
+        document.getElementById('idform').submit();
+        sessionStorage.setItem('processed', 'true');
+    }
     function logout(){
         document.getElementById('id-logout').submit();
     }
-
 
 </script>
 

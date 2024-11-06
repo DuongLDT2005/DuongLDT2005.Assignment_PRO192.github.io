@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEARCH STAFF </title>
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/searchStaffStyle.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/searchStaffStyle.css}">
+</head>
+
+<body>
+    <div class="navigator">
+        <img src="/diepluc.jpg" alt="Avatar diep luc" onclick="returnManage()">
+        <div class="inventory" onclick="returnInventory()">
+            <h4>Inventory</h4>
+        </div>
+        <div class="transaction" onclick="duplicateData()">
+            <h4>Transactions</h4>
+        </div>
+        <div class="staff" onclick="returnStaff()">
+            <h4>Staff</h4>
+        </div>
+        <i onclick="logout()" class="fa-solid fa-right-from-bracket"></i>
+        <form id="id-logout" action="/logOut" method="post">
+            <input  type="hidden">
+        </form>
+    </div>
+
+    <span th:if="${staffNotFound}" th:text="${staffNotFound}" class="error"></span>
+    <span th:if="${currentStaff}" th:text="${currentStaff}" class="error"></span>
+    <div class="showDetails">
+        <form id="searchform" class="searchStaffForm" action="/searchStaff" method="post" onsubmit="duplicateData()">
+            <input type="text" id="email" name="email" class="formName" placeholder="Staff email" required />
+            <input type="text" id="phoneNumber" name="phoneNumber" class="formName" placeholder="Staff phone number"
+                required />
+            <button class="returnButton" onclick="returnToManage()">Return</button>
+            <button type="submit" class="saveButton">Search</button>
+        </form>
+    </div>
+
+    <form class="id" hidden>
+        <input id="id" type="block" name="staffId" th:value="${staffId}" />
+    </form>
+
+
+</body>
+<script>
+    function returnToManage() {
+        window.location.replace('productManagement');
+    }
+    function returnInventory() {
+        window.location.replace('productManagement');
+    }
+    function returnManage() {
+        window.location.replace('manage');
+    }
+    function returnStaff() {
+        window.location.replace('staffManagement');
+    }
+
+    function duplicateData() {
+        sessionStorage.removeItem('processed2');
+    }
+    
+    function logout(){
+        document.getElementById('id-logout').submit();
+    }
+</script>
+
+</html>

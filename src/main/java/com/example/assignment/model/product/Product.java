@@ -113,14 +113,6 @@ public class Product {
         this.status = status;
     }
 
-    
-
-    @Override
-    public String toString() {
-        return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-                + ", quantity=" + quantity + ", category=" + category + ", status=" + status + "]";
-    }
-
     public double getCost() {
         return cost;
     }

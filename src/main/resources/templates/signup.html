@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/signinStyle.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/signinStyle.css}">
+    <title>Sign up</title>
+</head>
+
+<body>
+    <span th:if="${notEnoughFieldsError}" th:text="${notEnoughFieldsError}" class="error"></span>
+    <span th:if="${wrongPhoneFormatError}" th:text="${wrongPhoneFormatError}" class="error"></span>
+    <span th:if="${wrongMailFormatError}" th:text="${wrongMailFormatError}" class="error"></span>
+    <span th:if="${wrongConfirmPassword}" th:text="${wrongConfirmPassword}" class="error"></span>
+    <span th:if="${wrongShopnameFormatError}" th:text="${wrongShopnameFormatError}" class="error"></span>
+    <span th:if="${invalidFormatError}" th:text="${invalidFormatError}" class="error"></span>
+    <span th:if="${usernameExistedError}" th:text="${usernameExistedError}" class="error"></span>
+    <span th:if="${usernameExistedError}" th:text="${usernameExistedError}" class="error"></span>
+    <span th:if="${mailExistedError}" th:text="${mailExistedError}" class="error"></span>
+    <div class="login-container">
+        <h2>Sign up</h2>
+        <form action="/signup" method="post" id="signup-form">
+            <div class="role">
+                <div id="staff" class="staff tab" onclick="setActiveTab('staff')">Staff</div>
+                <div id="manager" class="manager tab active" onclick="setActiveTab('manager')">Manager</div>
+            </div>
+            <input type="text" id="role" name="role" value="manager" required style="display: none;"/>
+            <input type="text" id="shopname"  name="shopName" class="box" placeholder="Enter your branch"
+                required /><br>
+            <input type="text" name="name" class="box" placeholder="Enter your name" required /><br>
+            <input type="text" name="email" class="box" placeholder="Enter your email" required /><br>
+            <input type="text" name="phoneNumber" class="box" placeholder="Enter your phone number" required /><br>
+            <input type="text" name="userName" class="box" placeholder="Enter your username" required /><br>
+            <input type="password" name="password" class="box" placeholder="Enter your password" required /><br>
+            <input type="password" name="confirmPassword" class="box" placeholder="Enter your password again"
+                required /><br>
+            <button type="submit" class="box1 login-button">Sign Up</button>
+        </form>
+
+    </div>
+
+    <script>
+        function setActiveTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+
+            tabs.forEach(t => {
+                t.classList.remove('active');
+            });
+
+            document.getElementById(tab).classList.add('active');
+
+            const shopName = document.getElementById('shopname');
+            var role=document.getElementById('role');
+            if (tab === 'staff') {
+                shopName.value='null';
+                role.value='staff';
+                shopName.style.display = 'none';
+            } else {
+                shopName.value=null;
+                role.value='manager';
+                shopName.style.display = 'block';
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -34,14 +34,12 @@ public class Order {
 
     private long id;
 
-    // @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
-    // @JoinColumn(name = "order_id", referencedColumnName = "id")
     private List<OrderItem> orderItems;
 
     private LocalDate orderDate;
     private double totalBill;
-    private String status;//in-process, proccessed, canceled
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "staff_id", referencedColumnName = "id")

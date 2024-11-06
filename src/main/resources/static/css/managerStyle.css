@@ -7,7 +7,6 @@ body {
 
 .revenueStatic {
     display: flex;
-    width: 100%;
     height: 40%;
     padding: 4%;
 }
@@ -78,52 +77,63 @@ body {
 }
 
 .navigator {
-
-    font-family: Sans-serif;
-    padding-left: 1%;
-    background-color: rgb(59, 126, 226);
-    height: 56px;
-    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #3B7EE2;
+    height: 60px;
     display: flex;
-
+    align-items: center;
+    padding-left: 1%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
+
 
 img {
-    padding: 0.3%;
-    border-radius: 100%;
+    width: 45px; 
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 20px;
+
 }
+
+
 
 h4 {
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.name {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-weight: 500;
+    margin: 0;
+    font-size: 16px;
+    transition: color 0.3s ease;
 }
 
 
-
-.inventory,
-.transaction,
-.staff {
+.inventory, .transaction, .staff {
     cursor: pointer;
-    width: 9%;
+    width: 12%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    border-radius: 5px; 
+    margin-right: 1.5%; 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.inventory:hover, .transaction:hover, .staff:hover {
+    background-color: #7fa6de; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 
-.staff:hover {
-    background-color: rgb(129, 166, 222);
+.fa-right-from-bracket {
+    color: white;
+    font-size: 22px;
+   margin-left: auto;
+    padding: 10px; 
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.inventory:hover {
-    background-color: rgb(129, 166, 222);
-}
-
-.transaction:hover {
-    background-color: rgb(129, 166, 222);
+.fa-right-from-bracket:hover {
+    color: #FF7F7F;
+    transform: scale(1.1); 
 }

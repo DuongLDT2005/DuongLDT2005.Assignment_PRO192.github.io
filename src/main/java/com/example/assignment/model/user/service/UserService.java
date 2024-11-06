@@ -1,5 +1,6 @@
 package com.example.assignment.model.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,28 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void findUser(long id) {
-        userRepository.findById(id);
+    public User findUser(long id) {
+       return userRepository.findById(id).get();
+    }
+
+    public List<Manager> getManagers(){
+        List<Manager> managersList = new ArrayList<>();
+        for(User user:getUser()){
+            if(user.getRole().equals("manager")){
+                managersList.add((Manager)user);
+            }
+        }
+    
+        return  managersList;
+    }
+
+    public Manager findManagerByShopName(String shopName){
+        for(Manager manager:getManagers()){
+            if(manager.getShopName().equals(shopName)){
+                return manager;
+            }
+        }
+        return null;
     }
 
     public String signIn(String shopName,

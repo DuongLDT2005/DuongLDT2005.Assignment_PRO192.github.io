@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APPLY STAFF</title>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/applyStaffStyle.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/applyStaffStyle.css}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="image"> 
+            <img src="/images.jpg" alt="Avatar" align="right">
+        </div>
+        <table id="staff" class="table-document">
+            <div th:if="${staff != null}">
+                <tr>
+                    <th>Staff Name</th>
+                    <td><span th:text="${staff.name}"></span></td>
+                </tr>
+                <tr >
+                    <th>Phone Number</th>
+                    <td><span th:text="${staff.phonenumber}"></span></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><a th:href="'mailto:' + ${staff.email}" th:text="${staff.email}"></a></td>
+                </tr>
+                <tr>
+                    <th>Shop Name</th>
+                    <td><span th:text="${staff.shopName}"></span></td>
+                </tr>
+            </div>
+           
+        </table>
+        <div class="button-container">
+            <button onclick="save()" class="add-button">ADD</button>
+            <button onclick="window.location.replace('staffManagement')" class="decline-button">DECLINE</button>
+        </div>
+    </div>
+
+
+
+
+
+    <form id="applyform" action="/applyStaffById" method="post" style="display: none;">
+        <input id="idinput" type="text" name="id"  >
+    </form>
+    <form id="inforform" action="/getStaffById" method="post" style="display: none;">
+        <input id="id" name="id" type="text">
+    </form>
+
+
+
+</body>
+<script>
+     
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const staffId = urlParams.get('staffId');
+    if (staffId!=null) {
+        sessionStorage.setItem('id', staffId); 
+    }
+    const id = sessionStorage.getItem('id');
+   const processed2 = sessionStorage.getItem('processed2');
+
+    if (id && !processed2) {
+        document.getElementById('id').value = id;
+        document.getElementById('inforform').submit();
+        sessionStorage.setItem('processed2', 'true'); 
+    }
+});
+function save() {
+    const id = sessionStorage.getItem('id');
+    if (id) {
+        document.getElementById('idinput').value = id;
+        document.getElementById('applyform').submit();
+    }
+}  
+
+</script>
+
+</html>

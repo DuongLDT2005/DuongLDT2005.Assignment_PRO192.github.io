@@ -36,13 +36,6 @@ public class Invoice {
     private String paymentMethod;
     private LocalDate invoiceDate;
 
-    // public Invoice(String id, LocalDate invoiceDate, Order order, String paymentMethod, double totalAmount) {
-    //     this.id = id;
-    //     this.invoiceDate = invoiceDate;
-    //     this.order = order;
-    //     this.paymentMethod = paymentMethod;
-    //     this.totalAmount = totalAmount;
-    // }
     public Invoice() {
     }
 

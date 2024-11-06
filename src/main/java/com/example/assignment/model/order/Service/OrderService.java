@@ -43,13 +43,12 @@ public class OrderService {
     }
 
     public void createOrder(Order newOrder, User currentUser) {
-        LocalDate time = LocalDate.now();  // Thời gian hiện tại, bao gồm cả giây phút
-        double totalAmount = newOrder.getOrderItems().stream().mapToDouble(OrderItem::getPrice).sum();  // Tính tổng số tiền
+        LocalDate time = LocalDate.now();  
+        double totalAmount = newOrder.getOrderItems().stream().mapToDouble(OrderItem::getPrice).sum();
         String status = "done";
         if (currentUser != null) {
-            currentUser = userService.updateUser(currentUser);  // Gắn lại currentUser trước khi sử dụng nó
+            currentUser = userService.updateUser(currentUser); 
         }
-        // Cập nhật thông tin cho newOrder
         newOrder.setOrderDate(time);
         newOrder.setTotalBill(totalAmount);
         newOrder.setStatus(status);
@@ -85,7 +84,6 @@ public class OrderService {
     }
 
     public void addOrderItem(long productId, Order newOrder) {
-        System.out.println("===================" + productId + "===========================");
         Product product = findProductById(productId);
         if (product == null) {
             throw new IllegalArgumentException("Product not found");
@@ -112,7 +110,6 @@ public class OrderService {
             newOrder.getOrderItems().add(newItem);
         }
 
-        // Save the updated order to ensure the order items are linked
         orderRepository.save(newOrder);
     }
 
@@ -121,7 +118,6 @@ public class OrderService {
                 .filter(item -> item.getId() == orderItemId)
                 .findFirst();
         if (existingOrderItem.isPresent()) {
-            // Update quantity neu orderitem exist
             existingOrderItem.get().setQuantity(quantity);
         }
     }
@@ -135,7 +131,6 @@ public class OrderService {
             newOrder.getOrderItems().remove(existingOrderItem.get());
             orderRepository.save(newOrder);
 
-            // Re-fetch `newOrder` to update it in the current session
             Order updatedOrder = orderRepository.findById(newOrder.getId())
                     .orElseThrow(() -> new IllegalArgumentException("Order not found"));
             updatedOrder.getOrderItems().size();

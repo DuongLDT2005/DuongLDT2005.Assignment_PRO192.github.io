@@ -1,6 +1,8 @@
 package com.example.assignment.model.product.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,10 @@ public class InventoryService {
         this.productService = productService;
     }
 
+    public void addInventory(Inventory inventory) {
+        inventoryRepository.save(inventory);
+    }
+
     public List<Product> getProducts() {
         return productService.getProducts();
     }
@@ -29,10 +35,13 @@ public class InventoryService {
         return inventoryRepository.findAll();
     }
 
-    // public Inventory getInventoryById(long id){
-    // }
-    // public void addProductIntoInventory(int inventoryIndex){
-    //     getInventory().get(inventoryIndex).getProducts().add(e);
-    // }
+    public void setRestockDate(Inventory inventory) {
+        Optional<Inventory> existingInventory = inventoryRepository.findById(inventory.getId());
+        if (existingInventory.isPresent()) {
+            existingInventory.get().setRestockDate(LocalDate.now());
+            inventoryRepository.save(existingInventory.get());
+        }
+
+    }
 
 }

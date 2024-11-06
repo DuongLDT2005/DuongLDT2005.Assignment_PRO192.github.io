@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAFF MANAGEMENT</title>
+    <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/staffManagementStyle.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/staffManagementStyle.css}">
+</head>
+
+<body>
+    <div class="navigator">
+        <img src="/diepluc.jpg" alt="Avatar diep luc" onclick="returnManage()">
+        <div class="inventory" onclick="returnInventory()">
+            <h4>Inventory</h4>
+        </div>
+        <div class="transaction" onclick="returnTransaction()">
+            <h4>Transactions</h4>
+        </div>
+        <div class="staff" onclick="returnStaff()">
+            <h4>Staff</h4>
+        </div>
+        <i onclick="logout()" class="fa-solid fa-right-from-bracket"></i>
+        <form id="id-logout" action="/logOut" method="post">
+            <input  type="hidden">
+        </form>
+    </div>
+    <div class="container">
+        <div class="hader">
+            <div class="addStaff" onclick="addStaff()">
+                <i class="fa-solid fa-plus"></i>
+                <h3>Add Staff</h3>
+            </div>
+        </div>
+        <div class="staff-detail">
+            <table>
+                <tr>
+                    <th class="id">Staff ID</th>
+                    <th>Staff Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+                <tr th:each="staff: ${staffList}">
+                    <td><span class="id" id="id" th:text="${staff.id}"></span></td>
+                    <td><span th:text="${staff.name}"></span></td>
+                    <td><span th:text="${staff.email}"></span></td>
+                    <td><span th:text="${staff.phonenumber}"></span></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</body>
+<script>
+    function addStaff() {
+        window.location.replace('searchStaff');
+    }
+    function returnInventory() {
+        window.location.replace('productManagement');
+    }
+    function returnManage() {
+        window.location.replace('manage');
+    }
+    function returnStaff() {
+        window.location.replace('staffManagement');
+    }
+    function logout(){
+        document.getElementById('id-logout').submit();
+    }
+</script>
+
+</html>

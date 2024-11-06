@@ -23,19 +23,35 @@ public class Manager extends User {
     @JoinColumn(name = "inventory_id", referencedColumnName = "id")
     private Inventory inventoryManager;
 
-
-    //constructor rong~
     public Manager() {
         this.staffList = new ArrayList<>();
         this.inventoryManager = new Inventory();
     }
 
-    //constructor chinh'
     public Manager(String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
         super(shopName, email, name, password, phonenumber, role, status, username);
         this.staffList = new ArrayList<>();
         this.inventoryManager = new Inventory();
     }
+
+    public Manager(String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username,Inventory inventoryManager) {
+        super(shopName, email, name, password, phonenumber, role, status, username);
+        this.staffList = new ArrayList<>();
+        this.inventoryManager = inventoryManager;
+    }
+
+    public Manager(Inventory inventoryManager, List<Staff> staffList) {
+        this.inventoryManager = inventoryManager;
+        this.staffList = staffList;
+    }
+
+    public Manager(Inventory inventoryManager, List<Staff> staffList, String shopName, String email, String name, String password, String phonenumber, String role, boolean status, String username) {
+        super(shopName, email, name, password, phonenumber, role, status, username);
+        this.inventoryManager = inventoryManager;
+        this.staffList = staffList;
+    }
+
+
 
     
     public List<Staff> getStaffList() {
@@ -46,7 +62,6 @@ public class Manager extends User {
         return inventoryManager;
     }
 
-    //can nhac 
     public void setStaffList(List<Staff> staffList) {
         this.staffList = staffList;
     }

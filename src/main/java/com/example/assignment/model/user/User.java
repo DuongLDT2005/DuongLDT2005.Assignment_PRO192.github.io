@@ -1,6 +1,5 @@
 package com.example.assignment.model.user;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -32,13 +31,12 @@ public abstract class User {
     private String username;
     private String password;
 
-    @Column(insertable=false, updatable=false)
     private String role;
     private String shopName;
     private String name;
     private String email;
     private String phonenumber;
-    private boolean status;//on==true or off==false
+    private boolean status;
 
     public User(String shopName,String email, String name, String password, String phonenumber, String role, boolean status, String username) {
         this.email = email;

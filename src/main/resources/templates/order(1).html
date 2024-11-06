@@ -8,23 +8,44 @@
     <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/orderStyle.css">
     <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/orderStyle.css}">
-    <script src="/src/main/resources/static/css/script.js"></script>
-    <script th:src="@{/css/script.js}"></script>
+    <script src="/src/main/resources/static/script/order(1).js" defer></script>
 </head>
 
 <body>
 
     <div class="navigator">
         <div class="choseTable">
-
+            <i onclick="logout()" class="fa-solid fa-right-from-bracket"></i>
             <h2>ORDER ITEMS LIST</h2>
-
+            
+            <form id="id-logout" action="/logOut" method="post">
+                <input type="hidden">
+            </form>
         </div>
-        <div class="choseItems">
+        <div class="choseItems" onclick="toggleCategoryList()">
             <i class="fa-solid fa-mug-hot fa-xl"></i>
             <h2>CHOOSE ITEMS</h2>
         </div>
     </div>
+
+    <div id="categoryList" class="category-list" style="display: none;">
+        <div onclick="getCategory(this)" th:each="category : ${categoryList}" class="category-item">
+            <span th:text="${category}"></span>
+            <form id="filterform" action="/filterByCategory" method="post" hidden>
+                <input id="categoryIn" type="text" name="category">
+            </form>
+
+        </div>
+        <div onclick="nofilter()" class="category-item">None</div>
+        <form id="filternone" action="/returnDefaultProduct" method="post" hidden>
+            <input id="categorynone" type="text" name="category">
+        </form>
+    </div>
+
+
+
+    <span th:if="${nullOrder}" th:text="${nullOrder}" class="error"></span>
+
     <div class="orderbody">
         <div class="order-table">
             <div class="orderItemBar" th:each="orderItem : ${newOrderItems}" th:data-id="${orderItem.id}">
@@ -100,6 +121,38 @@
             document.getElementById('orderItemId').value = orderId;
             document.getElementById('deleteForm').submit();
         }
+
+        function toggleCategoryList() {
+            var categoryList = document.getElementById("categoryList");
+            if (categoryList.style.display == 'none') {
+                categoryList.style.display = 'grid';
+            } else {
+                categoryList.style.display = 'none';
+            }
+        }
+
+
+        function getCategory(categoryElement) {
+            var category = categoryElement.querySelector("span").textContent;
+            var categoryIn = document.getElementById('categoryIn');
+            categoryIn.value = category;
+            document.getElementById('filterform').submit();
+        }
+
+        function nofilter() {
+            document.getElementById('categorynone').value = 'null';
+            document.getElementById('filternone').submit();
+        }
+
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdownList");
+            dropdown.classList.toggle("show");
+        }
+
+        function logout() {
+            document.getElementById('id-logout').submit();
+        }
+
 
     </script>
 </body>

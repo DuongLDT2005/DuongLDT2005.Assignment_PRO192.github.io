@@ -8,7 +8,7 @@
     <script src="https://kit.fontawesome.com/75736e9502.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/productManagementStyle.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/productManagementStyle.css}">
-    <script src="/src/main/resources/static/script/test.js" defer></script>
+  
 </head>
 
 <body>
@@ -23,6 +23,10 @@
         <div class="staff" onclick="returnStaff()">
             <h4>Staff</h4>
         </div>
+        <i onclick="logout()" class="fa-solid fa-right-from-bracket"></i>
+        <form id="id-logout" action="/logOut" method="post">
+            <input  type="hidden">
+        </form>
     </div>
     <div class="container">
         <div class="hader">
@@ -40,8 +44,8 @@
                     <th>Cost</th>
                     <th>Quantity</th>
                 </tr>
-                <tr th:each="product:${newInventory}">
-                    <td><span class="id" th:text="${product.id}"></span></td>
+                <tr ondblclick="dublicate(this)" th:each="product:${newInventory}">
+                    <td><span class="id" id="id" th:text="${product.id}"></span></td>
                     <td><span th:text="${product.name}"></span></td>
                     <td><span th:text="${product.price}"></span></td>
                     <td><span th:text="${product.cost}"></span></td>
@@ -62,6 +66,19 @@
     }
     function returnManage(){
         window.location.replace('manage');
+    }
+    function returnStaff(){
+        window.location.replace('staffManagement');
+    }
+
+    function dublicate(row){
+        var id = row.querySelector('.id').textContent;
+        sessionStorage.setItem('data', id);
+        sessionStorage.removeItem('processed');
+        window.location.href = 'modifyProduct';
+    }
+    function logout(){
+        document.getElementById('id-logout').submit();
     }
 </script>
 
